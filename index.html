@@ -59,7 +59,18 @@ input,select,textarea{min-height:48px;font-size:16px}
 <label>Titre</label><input id="ltitle" placeholder="Ex. Terrarium 120x60x60">
 <label>Description</label><textarea id="ldesc" rows="4"></textarea>
 <label>Prix (€) — laisse vide si gratuit/non applicable</label><input id="lprice" type="number" step="0.01">
-<label>Département</label><input id="ldep" placeholder="66">
+<label>Département</label><input id="ldep" placeholder="66"><label>Département</label><input id="ldep" placeholder="66">
+<label>Espèce</label><input id="lspecies" placeholder="Ex. Pantherophis guttatus">
+<label>Morph</label><input id="lmorph" placeholder="Ex. Amelanistic">
+<label>Sexe</label>
+<select id="lsex">
+<option value="">Non précisé</option>
+<option value="Mâle">Mâle</option>
+<option value="Femelle">Femelle</option>
+<option value="Inconnu">Inconnu</option>
+</select>
+<label>Date de naissance</label><input id="lbirth" type="date">
+<label>Ville</label><input id="lcity" placeholder="Ex. Perpignan">
 <div class="row"><button class="primary" onclick="createListing()">Publier</button><button onclick="closeModal('listingModal')">Annuler</button></div>
 <p id="listingMsg" class="muted"></p>
 </div></div>
@@ -80,7 +91,7 @@ async function signup(){const email=document.getElementById("email").value.trim(
 async function login(){const m=document.getElementById("authMsg");const {error}=await sb.auth.signInWithPassword({email:document.getElementById("email").value.trim(),password:document.getElementById("password").value});m.textContent=error?error.message:"Connexion réussie !";if(!error){closeModal("authModal");updateAuth()}}
 async function logout(){await sb.auth.signOut();updateAuth()}
 async function updateAuth(){const {data}=await sb.auth.getUser();document.getElementById("authArea").innerHTML=data.user?`<button onclick="logout()">Se déconnecter</button>`:`<button class="primary" onclick="openAuth()">Créer un compte</button>`}
-async function createListing(){const {data:{user}}=await sb.auth.getUser();const m=document.getElementById("listingMsg");if(!user){m.textContent="Connecte-toi d'abord.";return}const price=document.getElementById("lprice").value;const payload={user_id:user.id,type:document.getElementById("ltype").value,status:"published",title:document.getElementById("ltitle").value.trim(),description:document.getElementById("ldesc").value.trim(),price:price===""?null:Number(price),is_free:price==="",department:document.getElementById("ldep").value.trim()};if(!payload.title){m.textContent="Ajoute un titre.";return}const {error}=await sb.from("listings").insert(payload);m.textContent=error?error.message:"Annonce publiée !";if(!error){setTimeout(()=>{closeModal("listingModal");loadListings()},600)}}
+async function createListing(){const {data:{user}}=await sb.auth.getUser();const m=document.getElementById("listingMsg");if(!user){m.textContent="Connecte-toi d'abord.";return}const price=document.getElementById("lprice").value;const payload={user_id:user.id,type:document.getElementById("ltype").value,status:"published",title:document.getElementById("ltitle").value.trim(),description:document.getElementById("ldesc").value.trim(),price:price===""?null:Number(price),is_free:price==="",department:document.getElementById("ldep").value.trim(),species_common:document.getElementById("lspecies").value.trim(),morph:document.getElementById("lmorph").value.trim(),sex:document.getElementById("lsex").value,birth_date:document.getElementById("lbirth").value||null,city:document.getElementById("lcity").value.trim()};if(!payload.title){m.textContent="Ajoute un titre.";return}const {error}=await sb.from("listings").insert(payload);m.textContent=error?error.message:"Annonce publiée !";if(!error){setTimeout(()=>{closeModal("listingModal");loadListings()},600)}}
 sb.auth.onAuthStateChange(()=>updateAuth());updateAuth();loadListings();
 </script>
 </body></html>

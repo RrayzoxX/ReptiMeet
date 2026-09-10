@@ -99,6 +99,7 @@ function closeModal(id){document.getElementById(id).classList.add("hidden")}
 function esc(s=""){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 function card(x){return `<div class="card" onclick="openListingDetail('${x.id}')"><span class="pill">${esc(x.type==="material"?"Matériel":x.type==="plant"?"Plante":x.type==="reptile"?"Reptile":x.type==="wanted"?"Je recherche":x.type==="exchange"?"Échange":x.type)}</span><h3>${esc(x.title)}</h3><p class="muted">${esc(x.description||"")}</p><div class="top"><span>${esc(x.department||"France")}</span><span class="price">${x.is_free?"Gratuit":(x.price!=null?Number(x.price).toFixed(2)+" €":"—")}</span></div></div>`}}
 let allListings=[];
+let allListings=[];
 
 function renderListings(data){
 const el=document.getElementById("listings");

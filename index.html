@@ -103,7 +103,8 @@ const SUPABASE_KEY="sb_publishable_xBR4bIUncMLvZtetqIFycQ_epoymMwv";
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 let favoriteIds=new Set();
 function show(id){for(const x of ["home","annonces","communaute"])document.getElementById(x).classList.toggle("hidden",x!==id); if(id==="annonces")loadListings();}
-function openAuth(){document.getElementById("authModal").classList.remove("hidden")}
+function openAuth(){document.getElementById("authModal").classList.remove("hidden");setAuthMode("signup")}
+function setAuthMode(mode){const signupMode=mode==="signup";document.getElementById("authTitle").textContent=signupMode?"Créer un compte":"Se connecter";document.getElementById("display").style.display=signupMode?"":"none";document.getElementById("display").previousElementSibling.style.display=signupMode?"":"none";document.getElementById("accountType").style.display=signupMode?"":"none";document.getElementById("accountType").previousElementSibling.style.display=signupMode?"":"none"}
 function openListing(){sb.auth.getUser().then(({data})=>{if(!data.user){openAuth();return}document.getElementById("listingModal").classList.remove("hidden")})}
 function closeModal(id){document.getElementById(id).classList.add("hidden")}
 function esc(s=""){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}

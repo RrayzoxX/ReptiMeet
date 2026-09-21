@@ -35,7 +35,7 @@ input,select,textarea{min-height:48px;font-size:16px}
 </style>
 </head>
 <body>
-<header><div class="nav"><div class="logo">Repti<span>Meet</span></div><nav><button onclick="show('home')">Accueil</button><button onclick="show('annonces')">Annonces</button><button onclick="show('communaute')">Communauté</button></nav><div id="authArea"><button class="primary" onclick="openAuth()">Créer un compte</button></div></div></header>
+<header><div class="nav"><div class="logo">Repti<span>Meet</span></div><nav><button onclick="show('home')">Accueil</button><button onclick="show('annonces')">Annonces</button><button onclick="openCommunityProtected()">Communauté</button></nav><div id="authArea"><button class="primary" onclick="openAuth()">Créer un compte</button></div></div></header>
 
 <main>
 <section id="home">
@@ -107,6 +107,7 @@ function show(id){for(const x of ["home","annonces","communaute"])document.getEl
 function openAuth(){document.getElementById("authModal").classList.remove("hidden");setAuthMode("signup")}
 function setAuthMode(mode){const signupMode=mode==="signup";document.getElementById("authTitle").textContent=signupMode?"Créer un compte":"Se connecter";document.getElementById("display").style.display=signupMode?"":"none";document.getElementById("display").previousElementSibling.style.display=signupMode?"":"none";document.getElementById("accountType").style.display=signupMode?"":"none";document.getElementById("accountType").previousElementSibling.style.display=signupMode?"":"none"}
 async function openListingProtected(){const {data:{session}}=await sb.auth.getSession();if(!session){openAuth();return}openListing()}
+async function openCommunityProtected(){const {data:{session}}=await sb.auth.getSession();if(!session){openAuth();return}show("communaute")}
 function openListing(){sb.auth.getUser().then(({data})=>{if(!data.user){openAuth();return}document.getElementById("listingModal").classList.remove("hidden")})}
 function closeModal(id){document.getElementById(id).classList.add("hidden")}
 function esc(s=""){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}

@@ -62,7 +62,7 @@ input,select,textarea{min-height:48px;font-size:16px}
 <h1>Communauté</h1><p class="muted">Un espace pour partager ses terrariums, élevages, conseils et expériences.</p>
 <div class="card"><h3>La communauté arrive dans la prochaine étape</h3><p class="muted">La base de données ReptiMeet contient déjà les tables nécessaires aux publications, commentaires, likes et abonnements.</p></div>
 </section>
-<section id="messages" class="hidden"><h1>Messages</h1><div id="conversationList"></div><div id="discussionView" class="hidden"><button onclick="showMessagesList()">← Retour aux messages</button><div id="discussionHeader"></div><div id="messageList"></div><div><input id="messageInput" type="text" placeholder="Écrire un message..."><button onclick="sendMessage()">Envoyer</button></div></div></section>
+<section id="messages" class="hidden"><div class="top"><div><h1>Messages</h1><p class="muted">Tes conversations</p></div><div class="row"><button onclick="show('home')">Accueil</button><button onclick="show('annonces')">Annonces</button><button onclick="openCommunityProtected()">Communauté</button></div></div><div id="conversationList"></div><div id="discussionView" class="hidden"><button onclick="showMessagesList()">← Retour aux messages</button><div id="discussionHeader"></div><div id="messageList"></div><div><input id="messageInput" type="text" placeholder="Écrire un message..."><button onclick="sendMessage()">Envoyer</button></div></div></section>
 </main>
 
 <div id="authModal" class="modal hidden"><div>

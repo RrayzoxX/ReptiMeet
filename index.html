@@ -159,7 +159,7 @@ const title=listingMap.get(c.listing_id)||"Conversation privée";
 const type=c.listing_id?"listing":"private";
 const {data:lastMessages}=await sb.from("messages").select("content,created_at").eq("conversation_id",c.id).order("created_at",{ascending:false}).limit(1);
 const lastMessage=lastMessages&&lastMessages.length?lastMessages[0].content:"Aucun message";
-const {data:unreadMessages}=await sb.from("messages").select("id").eq("conversation_id",c.id).neq("sender_id",user.id).is("read_at",null);
+const {data:unreadMessages}=await sb.from("messages").select("id").eq("conversation_id",c.id).is("read_at",null).neq("sender_id",user.id);
 const unreadCount=unreadMessages?unreadMessages.length:0;
 return {conversation:c,title,otherName,type,lastMessage,unreadCount,createdAt:lastMessages&&lastMessages.length?lastMessages[0].created_at:null};
 }));

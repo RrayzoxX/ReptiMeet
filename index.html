@@ -189,7 +189,7 @@ const {data:profile}=await sb.from("profiles").select("display_name,username").e
 if(profile)otherName=profile.display_name||profile.username||"Utilisateur";
 }
 document.getElementById("discussionHeader").innerHTML=`<h2>${esc(listingTitle)}</h2><p class="muted">${esc(otherName)}</p>`;
-const {error:readError}=await sb.from("messages").update({read_at:new Date().toISOString()}).eq("conversation_id",conversationId).neq("sender_id",user.id).is("read_at",null);
+await sb.rpc("mark_conversation_messages_read",{_conversation_id:conversationId});
 if(readError)console.log("Erreur lecture messages :",readError.message);
 await loadMessages(conversationId);
 }

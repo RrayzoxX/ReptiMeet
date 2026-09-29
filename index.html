@@ -170,7 +170,9 @@ return;
 }
 box.innerHTML=filtered.map(c=>`<div class="card" style="margin-bottom:12px;cursor:pointer" onclick="openConversation('${c.conversation.id}')"><h3>${esc(c.title)}</h3><p style="margin:6px 0 2px">${esc(c.otherName)}</p><p class="muted" style="margin:0">${esc(c.lastMessage)}</p>${c.unreadCount?`<p style="margin:6px 0 0;font-weight:600">● ${c.unreadCount} message${c.unreadCount>1?"s":""} non lu${c.unreadCount>1?"s":""}</p>`:""}</div>`).join("");
 }
+let currentConversationId=null;
 async function openConversation(conversationId){
+currentConversationId=conversationId;
 document.getElementById("conversationList").classList.add("hidden");
 document.getElementById("discussionView").classList.remove("hidden");
 const {data:{user}}=await sb.auth.getUser();
@@ -221,7 +223,7 @@ async function sendMessage(){
 const input=document.getElementById("messageInput");
 if(!input){alert("Erreur : champ message introuvable.");return}
 const content=input.value.trim();
-const conversationId=document.getElementById("messageList").dataset.conversationId;
+const conversationId=currentConversationId;
 if(!content){alert("Écris un message avant d'envoyer.");return}
 if(!conversationId){alert("Erreur : aucune conversation sélectionnée.");return}
 const {data:{user}}=await sb.auth.getUser();

@@ -219,12 +219,14 @@ return `<div style="display:flex;justify-content:${mine?"flex-end":"flex-start"}
 }
 async function sendMessage(){
 const input=document.getElementById("messageInput");
+if(!input){alert("Erreur : champ message introuvable.");return}
 const content=input.value.trim();
 const conversationId=document.getElementById("messageList").dataset.conversationId;
-if(!content||!conversationId)return;
+if(!content){alert("Écris un message avant d'envoyer.");return}
+if(!conversationId){alert("Erreur : aucune conversation sélectionnée.");return}
 const {data:{user}}=await sb.auth.getUser();
-if(!user)return;
-const {error}=await sb.from("messages").insert({conversation_id:conversationId,sender_id:user.id,content});
+if(!user){alert("Erreur : utilisateur non connecté.");return}
+const {data,error}=await sb.from("messages").insert({conversation_id:conversationId,sender_id:user.id,content});
 if(error){alert("Erreur envoi : "+error.message);return}
 input.value="";
 await loadMessages(conversationId);

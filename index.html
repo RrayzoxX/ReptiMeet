@@ -159,14 +159,16 @@ const title=listingMap.get(c.listing_id)||"Conversation privée";
 const type=c.listing_id?"listing":"private";
 const {data:lastMessages}=await sb.from("messages").select("content,created_at").eq("conversation_id",c.id).order("created_at",{ascending:false}).limit(1);
 const lastMessage=lastMessages&&lastMessages.length?lastMessages[0].content:"Aucun message";
-return {conversation:c,title,otherName,type,lastMessage,createdAt:lastMessages&&lastMessages.length?lastMessages[0].created_at:null};
+const {data:unreadMessages}=await sb.from("messages").select("id").eq("conversation_id",c.id).neq("sender_id",user.id).is("read_at",null);
+const unreadCount=unreadMessages?unreadMessages.length:0;
+return {conversation:c,title,otherName,type,lastMessage,unreadCount,createdAt:lastMessages&&lastMessages.length?lastMessages[0].created_at:null};
 }));
 const filtered=cards.filter(c=>currentMessageFilter==="all"||c.type===currentMessageFilter).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
 if(!filtered.length){
 box.innerHTML="<div class='card'><h3>Aucune conversation</h3><p class='muted'>Aucune conversation dans ce filtre.</p></div>";
 return;
 }
-box.innerHTML=filtered.map(c=>`<div class="card" style="margin-bottom:12px;cursor:pointer" onclick="openConversation('${c.conversation.id}')"><h3>${esc(c.title)}</h3><p style="margin:6px 0 2px">${esc(c.otherName)}</p><p class="muted" style="margin:0">${esc(c.lastMessage)}</p></div>`).join("");
+box.innerHTML=filtered.map(c=>`<div class="card" style="margin-bottom:12px;cursor:pointer" onclick="openConversation('${c.conversation.id}')"><h3>${esc(c.title)}</h3><p style="margin:6px 0 2px">${esc(c.otherName)}</p><p class="muted" style="margin:0">${esc(c.lastMessage)}</p>${c.unreadCount?`<p style="margin:6px 0 0;font-weight:600">● ${c.unreadCount} message${c.unreadCount>1?"s":""} non lu${c.unreadCount>1?"s":""}</p>`:""}</div>`).join("");
 }
 async function openConversation(conversationId){
 document.getElementById("conversationList").classList.add("hidden");

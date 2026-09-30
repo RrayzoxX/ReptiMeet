@@ -191,9 +191,9 @@ const {data:profile}=await sb.from("profiles").select("display_name,username").e
 if(profile)otherName=profile.display_name||profile.username||"Utilisateur";
 }
 document.getElementById("discussionHeader").innerHTML=`<h2>${esc(listingTitle)}</h2><p class="muted">${esc(otherName)}</p>`;
-await sb.rpc("mark_conversation_messages_read",{_conversation_id:conversationId});
-if(readError)console.log("Erreur lecture messages :",readError.message);
 await loadMessages(conversationId);
+const {error:readError}=await sb.rpc("mark_conversation_messages_read",{_conversation_id:conversationId});
+if(readError)console.log("Erreur lecture messages :",readError.message);
 }
 function showMessagesList(){
 document.getElementById("discussionView").classList.add("hidden");

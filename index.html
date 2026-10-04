@@ -63,7 +63,7 @@ input,select,textarea{min-height:48px;font-size:16px}
 <h1>Communauté</h1><p class="muted">Un espace pour partager ses terrariums, élevages, conseils et expériences.</p>
 <div class="card"><h3>La communauté arrive dans la prochaine étape</h3><p class="muted">La base de données ReptiMeet contient déjà les tables nécessaires aux publications, commentaires, likes et abonnements.</p></div>
 </section>
-<section id="messages" class="hidden"><div class="top"><div><h1>Messages</h1><p class="muted">Tes conversations</p></div><div class="row"><button onclick="show('home')">Accueil</button><button onclick="show('annonces')">Annonces</button><button onclick="openCommunityProtected()">Communauté</button></div></div><div id="messagesFilters" class="row" style="margin:16px 0"><button id="messagesFilterAll" class="primary" onclick="setMessageFilter('all')">Tout</button><button id="messagesFilterListings" onclick="setMessageFilter('listing')">Annonces</button><button id="messagesFilterPrivate" onclick="setMessageFilter('private')">Privé</button></div><div id="conversationList"></div><div id="discussionView" class="hidden"><button onclick="showMessagesList()">← Retour aux messages</button><div id="discussionHeader"></div><div id="messageList"></div><div><input id="messageInput" type="text" placeholder="Écrire un message..."><button onclick="sendMessage()">Envoyer</button></div></div></section>
+<section id="messages" class="hidden"><div class="top"><div><h1>Messages</h1><p class="muted">Tes conversations</p></div><div class="row"><button onclick="show('home')">Accueil</button><button onclick="show('annonces')">Annonces</button><button onclick="openCommunityProtected()">Communauté</button></div></div><div id="messagesFilters" class="row" style="margin:16px 0"><button id="messagesFilterAll" class="primary" onclick="setMessageFilter('all')">Tout</button><button id="messagesFilterListings" onclick="setMessageFilter('listing')">Annonces</button><button id="messagesFilterPrivate" onclick="setMessageFilter('private')">Privé</button></div><div id="conversationList"></div><div id="discussionView" class="hidden"><button onclick="showMessagesList();document.getElementById('messagesFilters').classList.remove('hidden')">← Retour aux messages</button><div id="discussionHeader"></div><div id="messageList"></div><div><input id="messageInput" type="text" placeholder="Écrire un message..."><button onclick="sendMessage()">Envoyer</button></div></div></section>
 </main>
 
 <div id="authModal" class="modal hidden"><div>
@@ -175,6 +175,7 @@ async function openConversation(conversationId){
 currentConversationId=conversationId;
 document.getElementById("conversationList").classList.add("hidden");
 document.getElementById("discussionView").classList.remove("hidden");
+document.getElementById("messagesFilters").classList.add("hidden");
 const {data:{user}}=await sb.auth.getUser();
 if(!user)return;
 const {data:conversation}=await sb.from("conversations").select("id,listing_id").eq("id",conversationId).maybeSingle();

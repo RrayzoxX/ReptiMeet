@@ -224,7 +224,7 @@ list.innerHTML=data.map(m=>{
 const mine=m.sender_id===user.id;
 const senderName=profileMap.get(m.sender_id)||"Utilisateur";
 const time=new Date(m.created_at).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
-return `<div style="display:flex;justify-content:${mine?"flex-end":"flex-start"};margin-bottom:10px"><div style="max-width:78%;padding:10px 13px;border-radius:16px;background:${mine?"#dff5d8":"#f0f0f0"};border:${mine?"none":"1px solid #ddd"}"><div style="font-size:12px;font-weight:600;margin-bottom:4px">${esc(mine?ownName:senderName)}</div><div>${esc(m.content)}</div><div style="font-size:11px;opacity:.6;text-align:right;margin-top:5px">${time}</div></div></div>`;
+return `<div style="display:flex;justify-content:${mine?"flex-end":"flex-start"};margin-bottom:10px"><div style="max-width:78%;padding:10px 13px;border-radius:16px;background:${mine?"#dff5d8":"#f0f0f0"};border:${mine?"none":"1px solid #ddd"}"><div style="font-size:12px;font-weight:600;margin-bottom:4px">${esc(mine?ownName:senderName)}</div><div>${esc(m.content)}</div><div style="font-size:11px;opacity:.6;text-align:right;margin-top:5px">${time}${mine&&m.read_at?" · Vu":""}</div></div></div>`;
 }).join("");
 }
 async function sendMessage(){
